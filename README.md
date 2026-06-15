@@ -100,7 +100,8 @@ fully-connected group; small-team predictions carry real domain shift.
     ├── features_v2.py           ← corrected interaction metrics (real mentions + reply graph)
     ├── ml_features.py           ← transformer / VADER emotion & harmony detectors
     ├── text_features.py         ← 17 grounded text-style signals (Empath / VADER / speech-acts)
-    ├── build_v2_features.py     ← assembles the v2 feature matrices
+    ├── build_features.py        ← builds the base 13-metric matrix for real datasets
+    ├── build_v2_features.py     ← recomputes the corrected interaction metrics
     ├── make_synthetic.py        ← disclosed in-domain synthetic augmentation chats
     ├── label_synthetic.py       ← folds the synthetic labels into the label set
     ├── build_synthetic_features.py
@@ -129,22 +130,27 @@ python src/parse_whatsapp.py
 python src/parse_nankani.py
 python src/parse_slack.py
 
-# 2. (optional) generate the disclosed synthetic augmentation
+# 2. build the base 13-metric feature matrix for the real datasets
+python src/build_features.py
+
+# 3. (optional) generate the disclosed synthetic augmentation
 python src/make_synthetic.py
 python src/label_synthetic.py
 python src/build_synthetic_features.py
 
-# 3. build the corrected v2 feature matrices
+# 4. recompute the corrected v2 interaction metrics
 python src/build_v2_features.py
 
-# 4. train the production model (CV-selects the fusion weight)
-python src/train_ml.py                 # with synthetic augmentation (default)
-python src/train_ml.py --no-synthetic  # ablation arm
+# 5. train the model. Labels (data/labels/llm_labels.json) are required here —
+#    soft archetype distributions produced by an LLM reading raw text.
+python src/train_ml.py                  # CV-selects the fusion weight (default)
+python src/train_ml.py --metric-w 0.50  # fixed metric/text weight (reference run)
+python src/train_ml.py --no-synthetic   # ablation: without synthetic augmentation
 
-# 5. blind held-out validation
+# 6. blind held-out validation
 python src/compare_holdout.py
 
-# 6. explore in the dashboard
+# 7. explore in the dashboard
 streamlit run src/dashboard.py
 ```
 
