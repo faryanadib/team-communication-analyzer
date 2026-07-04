@@ -28,8 +28,9 @@ LABELS = DATA / "labels"
 OUTPUTS = ROOT / "outputs"
 MODELS = OUTPUTS / "models"
 RESULTS = OUTPUTS / "results"
+ANNOTATION = OUTPUTS / "annotation"   # human inter-rater validation study artifacts
 
-for _d in (CLEAN, FEATURES, LABELS, MODELS, RESULTS):
+for _d in (CLEAN, FEATURES, LABELS, MODELS, RESULTS, ANNOTATION):
     _d.mkdir(parents=True, exist_ok=True)
 
 # ── raw ──────────────────────────────────────────────────────────────────────
@@ -62,6 +63,9 @@ WA_FEATURES_V2 = str(FEATURES / "wa_features_v2.json")          # v2 team (produ
 # ── labels ───────────────────────────────────────────────────────────────────
 LLM_LABELS = str(LABELS / "llm_labels.json")
 WA_HOLDOUT = str(LABELS / "wa_holdout_llm.json")
+# The weak-supervision labeler and its consumers read/write the same soft-label
+# file; OPUS_LABELS is kept as an alias so the labeling scripts stay readable.
+OPUS_LABELS = LLM_LABELS
 
 # ── outputs: models ──────────────────────────────────────────────────────────
 ML_MODEL = str(MODELS / "ml_model.joblib")
@@ -71,3 +75,10 @@ TEXT_CACHE = str(MODELS / "text_cache.npz")
 WA_RESULTS = str(RESULTS / "wa_results.json")
 ML_RESULTS = str(RESULTS / "ml_results.json")
 HOLDOUT_COMPARISON = str(RESULTS / "holdout_comparison.json")
+
+# ── outputs: human inter-rater validation study ──────────────────────────────
+ANNOTATION_SAMPLE = str(ANNOTATION / "sample_users.json")                 # blinded, shareable
+ANNOTATION_ANSWER_KEY = str(ANNOTATION / "answer_key_DO_NOT_SHARE.json")  # model labels, kept hidden
+ANNOTATION_ASSIGNMENT = str(ANNOTATION / "assignment.json")              # study design metadata
+ANNOTATION_RETURNED = str(ANNOTATION / "returned")                       # filled CSVs come back here
+ANNOTATION_AGREEMENT = str(RESULTS / "annotation_agreement.json")        # computed IAA report

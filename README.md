@@ -105,6 +105,10 @@ fully-connected group; small-team predictions carry real domain shift.
     ├── make_synthetic.py        ← disclosed in-domain synthetic augmentation chats
     ├── label_synthetic.py       ← folds the synthetic labels into the label set
     ├── build_synthetic_features.py
+    ├── opus_labeler.py          ← weak-supervision LLM labeler → soft archetype labels
+    ├── validate_labels.py       ← QA on the soft labels (coverage, convergent validity)
+    ├── build_annotation_sample.py ← blinded human-annotation sample builder (IAA study)
+    ├── analyze_agreement.py     ← human↔LLM & human↔human inter-rater agreement (α, κ)
     ├── train_ml.py              ← PRODUCTION: late-fusion model + CV weight selection
     ├── compare_holdout.py       ← blind held-out validation
     └── dashboard.py             ← Streamlit dashboard (friendly, 4 tabs)
@@ -137,6 +141,12 @@ python src/build_features.py
 python src/make_synthetic.py
 python src/label_synthetic.py
 python src/build_synthetic_features.py
+
+# 3b. weak-supervision labels + validation (set LLM_API_KEY + OPUS_MODEL_ID)
+python src/opus_labeler.py              # soft archetype labels → data/labels/
+python src/validate_labels.py           # QA report on the labels
+python src/build_annotation_sample.py   # blinded sample for the human IAA study
+python src/analyze_agreement.py         # human↔LLM & human↔human agreement (α, κ)
 
 # 4. recompute the corrected v2 interaction metrics
 python src/build_v2_features.py
