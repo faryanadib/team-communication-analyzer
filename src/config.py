@@ -75,6 +75,7 @@ TEXT_CACHE = str(MODELS / "text_cache.npz")
 WA_RESULTS = str(RESULTS / "wa_results.json")
 ML_RESULTS = str(RESULTS / "ml_results.json")
 HOLDOUT_COMPARISON = str(RESULTS / "holdout_comparison.json")
+INSAMPLE_CHECK = str(RESULTS / "insample_check.json")
 
 # ── outputs: human inter-rater validation study ──────────────────────────────
 ANNOTATION_SAMPLE = str(ANNOTATION / "sample_users.json")                 # blinded, shareable

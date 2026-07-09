@@ -111,6 +111,7 @@ fully-connected group; small-team predictions carry real domain shift.
     ├── analyze_agreement.py     ← human↔LLM & human↔human inter-rater agreement (α, κ)
     ├── train_ml.py              ← PRODUCTION: late-fusion model + CV weight selection
     ├── compare_holdout.py       ← blind held-out validation
+    ├── insample_check.py        ← in-sample sanity check (fit vs held-out gap)
     └── dashboard.py             ← Streamlit dashboard (friendly, 4 tabs)
 ```
 
@@ -157,8 +158,9 @@ python src/train_ml.py                  # CV-selects the fusion weight (default)
 python src/train_ml.py --metric-w 0.50  # fixed metric/text weight (reference run)
 python src/train_ml.py --no-synthetic   # ablation: without synthetic augmentation
 
-# 6. blind held-out validation
-python src/compare_holdout.py
+# 6. validation
+python src/compare_holdout.py           # blind held-out team test
+python src/insample_check.py            # in-sample sanity check (fit vs held-out gap)
 
 # 7. explore in the dashboard
 streamlit run src/dashboard.py
